@@ -1,16 +1,13 @@
 package org.nigel.automation;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.ios.IOSDriver;
 import org.nigel.automation.pageobjects.CreateTaskPage;
 import org.nigel.automation.pageobjects.TasksListPage;
+import org.nigel.automation.utils.JsonReader;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.MalformedURLException;
-import java.text.ParseException;
 
 public class ToDo_Android extends TestBase {
 
@@ -18,9 +15,9 @@ public class ToDo_Android extends TestBase {
     TasksListPage tasksListPage;
 
     @DataProvider(name = "tasks data")
-    public Object[][] passData() throws IOException, ParseException {
+    public Object[][] passData() {
         return JsonReader.getJSONdata
-                (System.getProperty("user.dir") + "/data/TasksData.json"
+                (System.getProperty("user.dir") + File.pathSeparator + "data" + File.pathSeparator + "TasksData.json"
                         , "Tasks Data", 2);
     }
 
