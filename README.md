@@ -8,3 +8,10 @@ https://appium.io/docs/en/2.0/intro/
 
 # Appium UiAutomator2 Driver Capabilities
 https://github.com/appium/appium-uiautomator2-driver#Capabilities
+
+
+# Start appium from terminal
+```bash
+source ~/.bash_profile
+appium
+```
