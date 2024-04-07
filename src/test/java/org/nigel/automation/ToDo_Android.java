@@ -17,7 +17,7 @@ public class ToDo_Android extends TestBase {
     @DataProvider(name = "tasks data")
     public Object[][] passData() {
         return JsonReader.getJSONdata
-                (System.getProperty("user.dir") + File.pathSeparator + "data" + File.pathSeparator + "TasksData.json"
+                (System.getProperty("user.dir") + File.separator + "data" + File.separator + "TasksData.json"
                         , "Tasks Data", 2);
     }
 
