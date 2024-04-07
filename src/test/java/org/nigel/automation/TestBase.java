@@ -15,20 +15,27 @@ public class TestBase {
     public static void Android_setUp() throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("platformName", "Android");
-        caps.setCapability("platformVersion", "9.0");
-        caps.setCapability("deviceName", "Android Emulator");
+        caps.setCapability("automationName", "UiAutomator2");
+        caps.setCapability("platformVersion", "13.0");
+        caps.setCapability("deviceName", "emulator-5554");
         caps.setCapability("app",
                 System.getProperty("user.dir") + File.separator + "apps" + File.separator + "ToDo.apk");
+
+        caps.setCapability("unicodeKeyboard", true);
+
         driver = new AndroidDriver(new URL("http://localhost:4723"), caps);
     }
 
     public static void iOS_setUp() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "iOS");
-        capabilities.setCapability("platformVersion", "14.4");
-        capabilities.setCapability("deviceName", "iPhone 13");
-        capabilities.setCapability("app",
-                System.getProperty("user.dir") + File.separator + "apps" + File.separator + "DailyCheck.zip");
+        capabilities.setCapability("automationName", "XCUITest");
+        capabilities.setCapability("platformVersion", "15.0");
+        capabilities.setCapability("udid", "0A91734C-D156-448B-BBC2-739003C9B4ED");
+        capabilities.setCapability("bundleID", "org.wdioNativeDemoApp");
+        //capabilities.setCapability("app",
+                //System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.ipa");
+
         driver = new IOSDriver(new URL("http://localhost:4723"), capabilities);
     }
 
