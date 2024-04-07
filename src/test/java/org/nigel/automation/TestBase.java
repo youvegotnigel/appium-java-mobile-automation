@@ -33,8 +33,11 @@ public class TestBase {
         capabilities.setCapability("platformVersion", "15.0");
         capabilities.setCapability("udid", "0A91734C-D156-448B-BBC2-739003C9B4ED");
         capabilities.setCapability("bundleID", "org.wdioNativeDemoApp");
-        //capabilities.setCapability("app",
-                //System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.ipa");
+
+        capabilities.setCapability("noReset", "true");
+        capabilities.setCapability("fullReset", "false");
+        capabilities.setCapability("autoAcceptAlerts", "true");
+
 
         driver = new IOSDriver(new URL("http://localhost:4723"), capabilities);
     }
