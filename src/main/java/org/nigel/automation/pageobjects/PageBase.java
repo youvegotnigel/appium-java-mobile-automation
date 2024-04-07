@@ -3,6 +3,7 @@ package org.nigel.automation.pageobjects;
 import io.appium.java_client.AppiumDriver;
 
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -43,5 +44,15 @@ public class PageBase {
     public String getAttribute(WebElement element, String attribute) {
         waitForVisibility(element);
         return element.getAttribute(attribute);
+    }
+
+    public boolean isDisplayed(WebElement element) {
+        boolean displayed;
+        try {
+            displayed = element.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+        return displayed;
     }
 }
