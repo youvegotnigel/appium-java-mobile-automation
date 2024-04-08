@@ -29,7 +29,6 @@ public class ToDo_Android extends TestBase {
         tasksListPage.clickAddTaskBtn();
         createTaskPage.enterTaskName(taskName);
         createTaskPage.enterTaskDesc(TaskDesc);
-        //(IOSDriver) driver.hideKeyboard();
         createTaskPage.clickSaveBtn();
         tearDown();
     }
