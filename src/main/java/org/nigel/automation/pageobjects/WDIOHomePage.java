@@ -11,27 +11,27 @@ public class WDIOHomePage extends PageBase {
         super(appiumDriver);
     }
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Home")
     @iOSXCUITFindBy(accessibility = "Home")
     WebElement homeIcon;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Webview")
     @iOSXCUITFindBy(accessibility = "Webview")
     WebElement webViewIcon;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Login")
     @iOSXCUITFindBy(accessibility = "Login")
     WebElement loginIcon;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Forms")
     @iOSXCUITFindBy(accessibility = "Forms")
     WebElement formsIcon;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Swipe")
     @iOSXCUITFindBy(accessibility = "Swipe")
     WebElement swipeIcon;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "Drag")
     @iOSXCUITFindBy(accessibility = "Drag")
     WebElement dragIcon;
 
