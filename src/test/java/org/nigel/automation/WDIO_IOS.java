@@ -13,7 +13,7 @@ public class WDIO_IOS extends TestBase{
     WDIOLoginPage wdioLoginPage;
 
     @Test
-    public void test_login_function() throws MalformedURLException {
+    public void test_login_function() throws MalformedURLException, InterruptedException {
 
         iOS_setUp();
         wdioHomePage = new WDIOHomePage(driver);
@@ -23,9 +23,11 @@ public class WDIO_IOS extends TestBase{
         wdioLoginPage.enterEmail("test@wdio.com");
         wdioLoginPage.enterPassword("superStrongPa$$w0rd");
         wdioLoginPage.clickLoginBtn();
-        Assert.assertTrue(wdioLoginPage.isSuccessMessagePopupDispalyed());
+        Thread.sleep(2000);
+        Assert.assertTrue(wdioLoginPage.isSuccessMessagePopupDisplayed());
         wdioLoginPage.clickOkBtn();
-        Assert.assertFalse(wdioLoginPage.isSuccessMessagePopupDispalyed());
+        Thread.sleep(1000);
+        Assert.assertFalse(wdioLoginPage.isSuccessMessagePopupDisplayed());
         tearDown();
     }
 
