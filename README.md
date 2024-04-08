@@ -1,5 +1,5 @@
 # appium-java-mobile-automation
-android mobile automation with appium in java
+A test automation framework for android and iOS mobile automation with appium in java
 
 
 # Appium Documentation
