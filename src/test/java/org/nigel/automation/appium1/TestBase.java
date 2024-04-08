@@ -1,4 +1,4 @@
-package org.nigel.automation;
+package org.nigel.automation.appium1;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;

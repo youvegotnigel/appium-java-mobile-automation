@@ -1,4 +1,4 @@
-package org.nigel.automation;
+package org.nigel.automation.appium1;
 
 import org.nigel.automation.pageobjects.WDIOHomePage;
 import org.nigel.automation.pageobjects.WDIOLoginPage;

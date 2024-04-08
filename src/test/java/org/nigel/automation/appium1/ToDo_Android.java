@@ -1,4 +1,4 @@
-package org.nigel.automation;
+package org.nigel.automation.appium1;
 
 import org.nigel.automation.pageobjects.CreateTaskPage;
 import org.nigel.automation.pageobjects.TasksListPage;
