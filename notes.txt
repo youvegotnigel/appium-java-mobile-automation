@@ -15,3 +15,5 @@ https://github.com/software-testing-bootcamp/S2E2-Appium-2.0-Java-Mobile-Automat
 https://github.com/software-testing-bootcamp/java-appium-cucumber-ios/blob/main/src/test/java/tripadvisor/tests/SearchTest.java
 
 https://www.youtube.com/watch?v=Tk_e6onks54
+
+https://applitools.com/blog/mobile-testing-android-appium-applitools/
