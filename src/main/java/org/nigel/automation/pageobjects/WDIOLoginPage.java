@@ -11,23 +11,23 @@ public class WDIOLoginPage extends PageBase {
         super(appiumDriver);
     }
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "input-email")
     @iOSXCUITFindBy(accessibility = "input-email")
     WebElement inputEmail;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "input-password")
     @iOSXCUITFindBy(accessibility = "input-password")
     WebElement inputPassword;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(accessibility = "button-LOGIN")
     @iOSXCUITFindBy(accessibility = "button-LOGIN")
     WebElement loginBtn;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(id = "android:id/alertTitle")
     @iOSXCUITFindBy(xpath = "//XCUIElementTypeAlert[@name=\"Success\"]")
     WebElement successMessagePopup;
 
-    @AndroidFindBy(id = "fab")
+    @AndroidFindBy(id = "android:id/button1")
     @iOSXCUITFindBy(accessibility = "OK")
     WebElement okBtn;
 
@@ -44,7 +44,7 @@ public class WDIOLoginPage extends PageBase {
         click(loginBtn);
     }
 
-    public boolean isSuccessMessagePopupDispalyed() {
+    public boolean isSuccessMessagePopupDisplayed() {
         return isDisplayed(successMessagePopup);
     }
 
