@@ -75,15 +75,9 @@ public class DemoTest {
         driver.quit();
     }
 
-
     public WebElement findElement(AppiumDriver driver, By element) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(element));
     }
-
-//    public WebElement findElement(IOSDriver driver, By element) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-//        return wait.until(ExpectedConditions.visibilityOfElementLocated(element));
-//    }
 
 }
