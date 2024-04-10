@@ -28,6 +28,18 @@ appium driver install xcuitest
 ```
 
 # Appium Plugins
+- element-wait@3.0.2 [installed (npm)]
+- appium-dashboard@v2.0.3 [installed (npm)]
+- images [not installed]
+- execute-driver [not installed]
+- relaxed-caps [not installed]
+- universal-xml [not installed]
+
+# Start Appium with Plugins
+```bash
+appium --use-plugins=<plugin-name>
+appium --use-plugins=<plugin-name1>,<plugin-name2>
+```
 
 
 # Appium Inspector
