@@ -31,8 +31,7 @@ public class DemoTest {
         options.setDeviceName("nigel-test-device"); // if u have only one device u can put any name here
         options.setAppPackage("com.saucelabs.mydemoapp.android");
         options.setAppActivity("com.saucelabs.mydemoapp.android.view.activities.MainActivity");
-        options.setCapability("app",
-                System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.apk");
+        options.setApp(System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.apk");
 
         AndroidDriver driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
 
@@ -58,18 +57,56 @@ public class DemoTest {
         options.setAutomationName(AutomationName.IOS_XCUI_TEST); //optional
         options.setDeviceName("iPhone 13");
         options.setPlatformVersion("15.0");
-        options.setCapability("app",
-                System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.Simulator.zip");
+        options.setApp(System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.Simulator.zip");
 
         IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
 
         findElement(driver, AppiumBy.accessibilityId("More-tab-item")).click();
         findElement(driver, AppiumBy.accessibilityId("Webview-menu-item")).click();
 
-        findElement(driver, By.xpath("//XCUIElementTypeTextField[@value=\"https://www.website.com\"]")).sendKeys("https://www.saucedemo.com/v1/");
+        findElement(driver, By.xpath("//XCUIElementTypeTextField[@value=\"https://www.website.com\"]")).sendKeys("https://www.saucedemo.com");
         findElement(driver, By.xpath("//XCUIElementTypeStaticText[@name=\"Go To Site\"]")).click();
 
-        WebElement newPage = findElement(driver, AppiumBy.accessibilityId("Swag Labs"));
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        WebElement newPage = findElement(driver, AppiumBy.accessibilityId("My Demo App"));
+        Assert.assertTrue(newPage.isDisplayed());
+
+        driver.quit();
+    }
+
+
+    /**
+     * TO RUN APPIUM TESTS WITHOUT EXPLICIT WAITS WE NEED TO START APPIUM SERVER AS BELOW:
+     * appium --use-plugins=element-wait
+     */
+    @Test
+    public void demo_ios_test_without_explicit_waits() throws MalformedURLException {
+
+        XCUITestOptions options = new XCUITestOptions();
+        options.setPlatformName("iOS"); //optional
+        options.setAutomationName(AutomationName.IOS_XCUI_TEST); //optional
+        options.setDeviceName("iPhone 13");
+        options.setPlatformVersion("15.0");
+        options.setApp(System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.Simulator.zip");
+
+        IOSDriver driver = new IOSDriver(new URL("http://127.0.0.1:4723"), options);
+
+        driver.findElement(AppiumBy.accessibilityId("More-tab-item")).click();
+        driver.findElement(AppiumBy.accessibilityId("Webview-menu-item")).click();
+
+        driver.findElement(By.xpath("//XCUIElementTypeTextField[@value=\"https://www.website.com\"]")).sendKeys("https://www.saucedemo.com");
+        driver.findElement(By.xpath("//XCUIElementTypeStaticText[@name=\"Go To Site\"]")).click();
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        WebElement newPage = driver.findElement(AppiumBy.accessibilityId("My Demo App"));
         Assert.assertTrue(newPage.isDisplayed());
 
         driver.quit();
