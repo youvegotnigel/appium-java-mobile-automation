@@ -2,12 +2,16 @@ package org.nigel.automation.gestures;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.remote.AutomationName;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -22,6 +26,7 @@ import java.util.Collections;
 
 public class GestureTest {
 
+    private static final String ANDROID_API_DEMO_APP_PATH = System.getProperty("user.dir") + File.separator + "apps" + File.separator + "ApiDemos.apk";
     private static final String IOS_SAUCE_LABS_DEMO_APP_PATH = System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.Simulator.zip";
     private static final String APPIUM_URL = "http://127.0.0.1:4723";
 
@@ -78,6 +83,52 @@ public class GestureTest {
         driver.quit();
     }
 
+    @Test
+    public void test_for_longPress() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setApp(ANDROID_API_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+        driver.findElement(AppiumBy.accessibilityId("Expandable Lists")).click();
+        driver.findElement(AppiumBy.accessibilityId("1. Custom Adapter")).click();
+
+        WebElement peopleNames = driver.findElement(By.xpath("//android.widget.TextView[@text=\"People Names\"]"));
+        longPress(driver, peopleNames);
+
+        WebElement sampleActions = driver.findElement(By.xpath("//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"Sample action\"]"));
+        Assert.assertTrue(sampleActions.isDisplayed());
+
+        driver.quit();
+    }
+
+    @Test
+    public void test_for_longPress_using_actions_class() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setApp(ANDROID_API_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+        driver.findElement(AppiumBy.accessibilityId("Expandable Lists")).click();
+        driver.findElement(AppiumBy.accessibilityId("1. Custom Adapter")).click();
+
+        WebElement peopleNames = driver.findElement(By.xpath("//android.widget.TextView[@text=\"People Names\"]"));
+        Actions action = new Actions(driver);
+        action.clickAndHold(peopleNames).perform();
+
+        longPress(driver, peopleNames);
+
+        WebElement sampleActions = driver.findElement(By.xpath("//android.widget.TextView[@resource-id=\"android:id/title\" and @text=\"Sample action\"]"));
+        Assert.assertTrue(sampleActions.isDisplayed());
+
+        driver.quit();
+    }
 
 
     private void tap(AppiumDriver driver, WebElement element) {
@@ -114,6 +165,23 @@ public class GestureTest {
                 .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg())) // move finger down and click (similar to mouse left click)
                 .addAction(new Pause(finger1, Duration.ofMillis(100))) // click and hold for a small duration
                 .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg())); // move finger away from button
+
+        driver.perform(Collections.singletonList(sequence));
+    }
+
+    private void longPress(AppiumDriver driver, WebElement element) {
+
+        Point location = element.getLocation();
+        Dimension size = element.getSize();
+
+        Point centerOfElement = getCenterOfElement(location, size);
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), centerOfElement))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(2000))) // just like tap but duration increased up to 2 seconds
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
         driver.perform(Collections.singletonList(sequence));
     }
