@@ -22,11 +22,13 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class GestureTest {
 
     private static final String ANDROID_API_DEMO_APP_PATH = System.getProperty("user.dir") + File.separator + "apps" + File.separator + "ApiDemos.apk";
+    private static final String ANDROID_SAUCE_LABS_DEMO_APP_PATH = System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.apk";
     private static final String IOS_SAUCE_LABS_DEMO_APP_PATH = System.getProperty("user.dir") + File.separator + "apps" + File.separator + "SauceLabs-Demo-App.Simulator.zip";
     private static final String APPIUM_URL = "http://127.0.0.1:4723";
 
@@ -130,6 +132,36 @@ public class GestureTest {
         driver.quit();
     }
 
+    @Test
+    public void test_for_zoom() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setAppPackage("com.saucelabs.mydemoapp.android");
+        options.setAppActivity("com.saucelabs.mydemoapp.android.view.activities.MainActivity");
+        options.autoGrantPermissions(); // give all permissions to access files, images etc.
+        options.setApp(ANDROID_SAUCE_LABS_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        driver.findElement(AppiumBy.accessibilityId("View menu")).click();
+        driver.findElement(By.xpath("//android.widget.TextView[@resource-id=\"com.saucelabs.mydemoapp.android:id/itemTV\" and @text=\"Drawing\"]")).click();
+
+        String title = driver.findElement(By.id("com.saucelabs.mydemoapp.android:id/drawingTV")).getText().trim();
+        Assert.assertEquals(title, "Drawing");
+
+        WebElement drawingPad = driver.findElement(AppiumBy.accessibilityId("Pad to draw on"));
+
+        zoom(driver, drawingPad);
+
+        driver.quit();
+    }
+
 
     private void tap(AppiumDriver driver, WebElement element) {
 
@@ -184,6 +216,33 @@ public class GestureTest {
                 .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
         driver.perform(Collections.singletonList(sequence));
+    }
+
+    private void zoom(AppiumDriver driver, WebElement element) {
+
+        Point centerOfElement = getCenterOfElement(element.getLocation(), element.getSize());
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        PointerInput finger2 = new PointerInput(PointerInput.Kind.TOUCH, "finger2");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), centerOfElement))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(200),
+                        PointerInput.Origin.viewport(), centerOfElement.getX() + 100,
+                        centerOfElement.getY() - 100))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        Sequence sequence2 = new Sequence(finger2, 1)
+                .addAction(finger2.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), centerOfElement))
+                .addAction(finger2.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger2, Duration.ofMillis(200)))
+                .addAction(finger2.createPointerMove(Duration.ofMillis(200),
+                        PointerInput.Origin.viewport(), centerOfElement.getX() - 100,
+                        centerOfElement.getY() + 100))
+                .addAction(finger2.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Arrays.asList(sequence, sequence2));
     }
 
     private Point getCenterOfElement(Point location, Dimension size) {
