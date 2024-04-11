@@ -202,6 +202,31 @@ public class GestureTest {
         driver.quit();
     }
 
+    @Test
+    public void test_for_drag_and_drop() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setApp(ANDROID_API_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+        driver.findElement(AppiumBy.accessibilityId("Drag and Drop")).click();
+
+        WebElement sourceElement = driver.findElement(By.id("io.appium.android.apis:id/drag_dot_1"));
+        WebElement targetElement = driver.findElement(By.id("io.appium.android.apis:id/drag_dot_2"));
+
+        Point sourceElementCenter = getCenterOfElement(sourceElement.getLocation(), sourceElement.getSize());
+        Point targetElementCenter = getCenterOfElement(targetElement.getLocation(), targetElement.getSize());
+
+        dragAndDrop(driver, sourceElementCenter, targetElementCenter);
+
+        String result = driver.findElement(By.id("io.appium.android.apis:id/drag_result_text")).getText().trim();
+        Assert.assertEquals(result, "Dropped!");
+
+        driver.quit();
+    }
+
 
     private void tap(AppiumDriver driver, WebElement element) {
 
@@ -363,6 +388,18 @@ public class GestureTest {
             }
             j++;
         }
+    }
+
+    private void dragAndDrop(AppiumDriver driver, Point sourcePoint, Point targetPoint) {
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), sourcePoint))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(500)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(500), PointerInput.Origin.viewport(), targetPoint))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(sequence));
     }
 
     private static void scrollDown(AppiumDriver driver) {
