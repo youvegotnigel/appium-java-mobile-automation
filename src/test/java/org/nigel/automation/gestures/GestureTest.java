@@ -317,8 +317,9 @@ public class GestureTest {
 
         int maxScrollCount = 30;
         int i = 0;
+        int j = 0;
         String previousPageSource = "";
-        String currentPageSource = "";
+        String currentPageSource;
 
         while (i < maxScrollCount) {
             try {
@@ -326,34 +327,41 @@ public class GestureTest {
 
                 WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
                 if (element.isDisplayed()) {
+                    System.out.printf("Element %s found while scrolling down%n", accessibilityId);
                     return;
                 }
+
+            } catch (NoSuchElementException e) {
+                scrollDown(driver);
+                currentPageSource = driver.getPageSource();
 
                 // to check if bottom of the app is reached
                 if(Objects.equals(previousPageSource, currentPageSource)) {
                     break;
                 }
-            } catch (NoSuchElementException e) {
-                scrollDown(driver);
-                currentPageSource = driver.getPageSource();
-                System.out.println("Previous :: " + previousPageSource);
-                System.out.println("Current  :: " + currentPageSource);
-            }
 
+            }
             i++;
         }
 
-        while (i > 0) {
+        while (j < maxScrollCount) {
             try {
                 WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
                 if (element.isDisplayed()) {
+                    System.out.printf("Element %s found while scrolling up%n", accessibilityId);
+
                     return;
                 }
             } catch (NoSuchElementException e) {
                 scrollUp(driver);
-            }
+                currentPageSource = driver.getPageSource();
 
-            i--;
+                // to check if top of the app is reached
+                if(Objects.equals(previousPageSource, currentPageSource)) {
+                    break;
+                }
+            }
+            j++;
         }
     }
 
