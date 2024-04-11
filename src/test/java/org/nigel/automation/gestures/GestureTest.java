@@ -7,10 +7,7 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.remote.AutomationName;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
@@ -24,6 +21,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 public class GestureTest {
 
@@ -162,6 +160,48 @@ public class GestureTest {
         driver.quit();
     }
 
+    @Test
+    public void test_for_scroll() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setApp(ANDROID_API_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+
+        scrollUpOrDown(driver, "down");
+        WebElement listMenu = driver.findElement(AppiumBy.accessibilityId("Lists"));
+        Assert.assertTrue(listMenu.isDisplayed());
+
+        scrollUpOrDown(driver, "up");
+        WebElement buttonsMenu = driver.findElement(AppiumBy.accessibilityId("Buttons"));
+        Assert.assertTrue(buttonsMenu.isDisplayed());
+
+        driver.quit();
+    }
+
+    @Test
+    public void test_for_scroll_to_element() throws MalformedURLException {
+
+        UiAutomator2Options options = new UiAutomator2Options();
+        options.setDeviceName("nigel-test-device");
+        options.setApp(ANDROID_API_DEMO_APP_PATH);
+
+        AndroidDriver driver = new AndroidDriver(new URL(APPIUM_URL), options);
+        driver.findElement(AppiumBy.accessibilityId("Views")).click();
+
+        scrollToElement(driver, "Visibility");
+        WebElement visibilityMenu = driver.findElement(AppiumBy.accessibilityId("Visibility"));
+        Assert.assertTrue(visibilityMenu.isDisplayed());
+
+        scrollToElement(driver, "Buttons");
+        WebElement buttonsMenu = driver.findElement(AppiumBy.accessibilityId("Buttons"));
+        Assert.assertTrue(buttonsMenu.isDisplayed());
+
+        driver.quit();
+    }
+
 
     private void tap(AppiumDriver driver, WebElement element) {
 
@@ -243,6 +283,112 @@ public class GestureTest {
                 .addAction(finger2.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
 
         driver.perform(Arrays.asList(sequence, sequence2));
+    }
+
+    private void scrollUpOrDown(AppiumDriver driver, String direction) {
+
+        Dimension size = driver.manage().window().getSize();
+        int startX = (int) (size.getWidth() * 0.5);
+        int startY = (int) (size.getHeight() * 0.5);
+        int endX = startX; // since doing a scroll the x coordinate does not change
+        int endY;
+
+        if(direction.equalsIgnoreCase("down")) {
+            endY = (int) (size.getHeight() * 0.25);
+        } else if (direction.equalsIgnoreCase("up")) {
+            endY = (int) (size.getHeight() * 0.75);
+        } else {
+            endY = (int) (size.getHeight() * 0.5);
+        }
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                // createPointerMove method 3rd parameter has changed from web element to coordinate system
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), endX, endY))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        driver.perform(Collections.singletonList(sequence));
+    }
+
+    private void scrollToElement(AppiumDriver driver, String accessibilityId) {
+
+        int maxScrollCount = 30;
+        int i = 0;
+        String previousPageSource = "";
+        String currentPageSource = "";
+
+        while (i < maxScrollCount) {
+            try {
+                previousPageSource = driver.getPageSource();
+
+                WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
+                if (element.isDisplayed()) {
+                    return;
+                }
+
+                // to check if bottom of the app is reached
+                if(Objects.equals(previousPageSource, currentPageSource)) {
+                    break;
+                }
+            } catch (NoSuchElementException e) {
+                scrollDown(driver);
+                currentPageSource = driver.getPageSource();
+                System.out.println("Previous :: " + previousPageSource);
+                System.out.println("Current  :: " + currentPageSource);
+            }
+
+            i++;
+        }
+
+        while (i > 0) {
+            try {
+                WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
+                if (element.isDisplayed()) {
+                    return;
+                }
+            } catch (NoSuchElementException e) {
+                scrollUp(driver);
+            }
+
+            i--;
+        }
+    }
+
+    private static void scrollDown(AppiumDriver driver) {
+
+        Dimension size = driver.manage().window().getSize();
+        int startX = (int) (size.getWidth() * 0.5);
+        int startY = (int) (size.getHeight() * 0.5);
+        int endY = (int) (size.getHeight() * 0.25);
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), startX, endY))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(sequence));
+    }
+
+    private static void scrollUp(AppiumDriver driver) {
+
+        Dimension size = driver.manage().window().getSize();
+        int startX = (int) (size.getWidth() * 0.5);
+        int startY = (int) (size.getHeight() * 0.5);
+        int endY = (int) (size.getHeight() * 0.75);
+
+        PointerInput finger1 = new PointerInput(PointerInput.Kind.TOUCH, "finger1");
+        Sequence sequence = new Sequence(finger1, 1)
+                .addAction(finger1.createPointerMove(Duration.ZERO, PointerInput.Origin.viewport(), startX, startY))
+                .addAction(finger1.createPointerDown(PointerInput.MouseButton.LEFT.asArg()))
+                .addAction(new Pause(finger1, Duration.ofMillis(200)))
+                .addAction(finger1.createPointerMove(Duration.ofMillis(100), PointerInput.Origin.viewport(), startX, endY))
+                .addAction(finger1.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+        driver.perform(Collections.singletonList(sequence));
     }
 
     private Point getCenterOfElement(Point location, Dimension size) {
