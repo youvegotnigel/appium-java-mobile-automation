@@ -1,33 +1,48 @@
 # appium-java-mobile-automation
-A test automation framework for android and iOS mobile automation with appium in java
+*This test automation project is designed to learn the latest features in Appium 2.X.X and Appium Java Client 9.X.X*
 
-# Appium 2.0 Architecture
+## Appium 2.0 Architecture
 ![appium-architecture](./images/architecture.png)
 
-# Prerequisites
-Node.js should be installed
-```bash
-brew install node
-```
+## Prerequisites
+1. Node.js should be installed
+    ```bash
+    brew install node
+    ```
+2. Set ANDROID_HOME Environment Variable
+   ```bash
+   # open file in vscode
+   code ~/.zshrc
+   
+   # add these lines
+   export ANDROID_HOME=$HOME/Library/Android/sdk/
+   export PATH=$PATH:$ANDROID_HOME/tools
+   export PATH=$PATH:$ANDROID_HOME/platform-tools
+   
+   # reload
+   source ~/.zshrc
+   ```
 
-# Install Appium CLI
+## Install Appium CLI
 ```bash
 npm install appium-installer -g
 appium-installer
 ```
 
-# Start Appium Server
+## Start Appium Server
 ```bash
 appium
+or
+appium --use-plugins=element-wait
 ```
 
-# Appium Drivers
+## Appium Drivers
 ```bash
 appium driver install uiautomator2
 appium driver install xcuitest
 ```
 
-# Appium Plugins
+## Appium Plugins
 - element-wait@3.0.2 [installed (npm)]
 - appium-dashboard@v2.0.3 [installed (npm)]
 - images [not installed]
@@ -35,41 +50,34 @@ appium driver install xcuitest
 - relaxed-caps [not installed]
 - universal-xml [not installed]
 
-# Start Appium with Plugins
+## Start Appium with Plugins
 ```bash
 appium --use-plugins=<plugin-name>
 appium --use-plugins=<plugin-name1>,<plugin-name2>
 ```
 
 
-# Appium Inspector
+## Appium Inspector
 - https://github.com/appium/appium-inspector/releases
 - https://inspector.appiumpro.com/
 
 
-# Appium Documentation
+## Appium Documentation
 - https://appium.io/docs/en/2.0/intro/
 
 
-# Appium UiAutomator2 Driver Capabilities
+## Appium UiAutomator2 Driver Capabilities
 - https://github.com/appium/appium-uiautomator2-driver#Capabilities
 
 
-# Start appium from terminal
-```bash
-source ~/.bash_profile
-appium
-```
-
-
-# Appium Server & Driver Installation
+## Appium Server & Driver Installation
 ```bash
 npm install -g appium@next
 appium driver install uiautomator2
 appium driver install xcuitest
 ```
 
-# Resources
+## Resources
 - https://github.com/AppiumTestDistribution/appium-device-farm
 - https://appium.io/
 - https://github.com/appium
