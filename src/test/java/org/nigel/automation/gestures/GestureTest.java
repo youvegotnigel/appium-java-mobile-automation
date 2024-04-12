@@ -195,9 +195,17 @@ public class GestureTest {
         WebElement visibilityMenu = driver.findElement(AppiumBy.accessibilityId("Visibility"));
         Assert.assertTrue(visibilityMenu.isDisplayed());
 
-        scrollToElement(driver, "Buttons");
-        WebElement buttonsMenu = driver.findElement(AppiumBy.accessibilityId("Buttons"));
-        Assert.assertTrue(buttonsMenu.isDisplayed());
+        scrollToElement(driver, "Popup Menu");
+        WebElement popupMenu = driver.findElement(AppiumBy.accessibilityId("Popup Menu"));
+        Assert.assertTrue(popupMenu.isDisplayed());
+
+        scrollToElement(driver, "WebView3");
+        WebElement webView3Menu = driver.findElement(AppiumBy.accessibilityId("WebView3"));
+        Assert.assertTrue(webView3Menu.isDisplayed());
+
+        scrollToElement(driver, "Animation");
+        WebElement animationMenu = driver.findElement(AppiumBy.accessibilityId("Animation"));
+        Assert.assertTrue(animationMenu.isDisplayed());
 
         driver.quit();
     }
@@ -348,8 +356,6 @@ public class GestureTest {
 
         while (i < maxScrollCount) {
             try {
-                previousPageSource = driver.getPageSource();
-
                 WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
                 if (element.isDisplayed()) {
                     System.out.printf("Element %s found while scrolling down%n", accessibilityId);
@@ -364,7 +370,7 @@ public class GestureTest {
                 if(Objects.equals(previousPageSource, currentPageSource)) {
                     break;
                 }
-
+                previousPageSource = currentPageSource;
             }
             i++;
         }
@@ -374,7 +380,6 @@ public class GestureTest {
                 WebElement element = driver.findElement(AppiumBy.accessibilityId(accessibilityId));
                 if (element.isDisplayed()) {
                     System.out.printf("Element %s found while scrolling up%n", accessibilityId);
-
                     return;
                 }
             } catch (NoSuchElementException e) {
@@ -385,6 +390,7 @@ public class GestureTest {
                 if(Objects.equals(previousPageSource, currentPageSource)) {
                     break;
                 }
+                previousPageSource = currentPageSource;
             }
             j++;
         }
