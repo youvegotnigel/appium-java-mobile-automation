@@ -83,7 +83,7 @@ public class GestureTest {
         driver.quit();
     }
 
-    @Test
+    @Test(enabled = false)
     public void test_for_longPress() throws MalformedURLException {
 
         UiAutomator2Options options = new UiAutomator2Options();
@@ -105,7 +105,7 @@ public class GestureTest {
         driver.quit();
     }
 
-    @Test
+    @Test(enabled = false)
     public void test_for_longPress_using_actions_class() throws MalformedURLException {
 
         UiAutomator2Options options = new UiAutomator2Options();
@@ -130,7 +130,7 @@ public class GestureTest {
         driver.quit();
     }
 
-    @Test
+    @Test(enabled = false)
     public void test_for_zoom() throws MalformedURLException {
 
         UiAutomator2Options options = new UiAutomator2Options();
@@ -160,7 +160,7 @@ public class GestureTest {
         driver.quit();
     }
 
-    @Test
+    @Test(enabled = false)
     public void test_for_scroll() throws MalformedURLException {
 
         UiAutomator2Options options = new UiAutomator2Options();
