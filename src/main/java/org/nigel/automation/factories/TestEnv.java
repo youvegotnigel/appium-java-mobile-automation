@@ -10,7 +10,7 @@ public enum TestEnv {
         this.value = value;
     }
 
-    private String value;
+    private final String value;
 
     public String getValue(){
         return value;
