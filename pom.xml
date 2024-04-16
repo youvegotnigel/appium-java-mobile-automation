@@ -20,6 +20,7 @@
     <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
     <appium.java.client.version>9.2.2</appium.java.client.version>
     <testng.version>7.8.0</testng.version>
+    <typesafe.version>1.4.2</typesafe.version>
     <mockneat.version>0.4.8</mockneat.version>
     <log4j.api.version>2.20.0</log4j.api.version>
     <log4j.core.version>2.20.0</log4j.core.version>
@@ -84,5 +85,10 @@
           <artifactId>json-simple</artifactId>
           <version>${json.simple}</version>
       </dependency>
+    <dependency>
+      <groupId>com.typesafe</groupId>
+      <artifactId>config</artifactId>
+      <version>${typesafe.version}</version>
+    </dependency>
   </dependencies>
 </project>
