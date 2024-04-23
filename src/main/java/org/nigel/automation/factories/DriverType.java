@@ -6,9 +6,11 @@ public enum DriverType {
     IOS("ios"),
     WINDOWS("windows"),
     MAC("mac"),
-    CHROMIUM("chromium"),
+    ANDROID_CHROMIUM("android_chromium"),
+    IOS_CHROMIUM("ios_chromium"),
     SAFARI("safari"),
-    FIREFOX("firefox");
+    ANDROID_FIREFOX("android_firefox"),
+    IOS_FIREFOX("android_firefox");
 
     DriverType(String value){
         this.value = value;
